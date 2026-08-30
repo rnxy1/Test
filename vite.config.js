@@ -1,44 +1,27 @@
 import path from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import frappeui from 'frappe-ui/vite'
 
 export default defineConfig({
   base: '/',
-  plugins: [
-    frappeui({
-      frappeProxy: false,
-      jinjaBootData: false,
-      buildConfig: false,
-      lucideIcons: true,
-    }),
-    vue(),
-  ],
+  plugins: [vue()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
-      interactjs: 'interactjs/dist/interact.min.js',
     },
   },
   build: {
     outDir: 'dist',
     emptyOutDir: true,
-    target: 'es2015',
-  },
-  optimizeDeps: {
-    include: [
-      'frappe-ui > feather-icons',
-      'tailwind.config.js',
-      'engine.io-client',
-      'highlight.js',
-      'lowlight',
-      'interactjs',
-    ],
+    target: 'es2018',
   },
   server: {
     host: '0.0.0.0',
     port: 8080,
-    sourcemapIgnoreList: () => false,
+  },
+  preview: {
+    host: '0.0.0.0',
+    port: 8080,
   },
   define: {
     __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
