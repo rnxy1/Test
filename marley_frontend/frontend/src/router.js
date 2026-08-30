@@ -5,69 +5,29 @@ import { users } from './data/users'
 const isAIStudioPreview = import.meta.env.VITE_AI_STUDIO_PREVIEW === '1'
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-  },
-  {
-    path: '/waitlist',
-    name: 'Waitlist',
-    component: () => import('@/pages/Waitlist.vue'),
-  },
-  {
-    path: '/Register',
-    name: 'Register',
-    component: ()=> import('@/pages/Register.vue')
-  },
-  {
-    path: '/Appointment',
-    name: 'Appointment',
-    component: ()=> import('@/pages/Appointment.vue')
-  },
-  {
-    path: '/Booking_confirmation',
-    name: 'Booking_confirmation',
-    component: ()=> import('@/pages/Booking_confirmation.vue')
-  },
-  {
-    path: '/BookingSuccess',
-    name: 'BookingSuccess',
-    component: ()=> import('@/pages/BookingSuccess.vue')
-  },
-  {
-    path: '/kiosk',
-    name: 'Kiosk',
-    component: ()=> import('@/pages/Kiosk.vue')
-  },
-  {
-    path: '/QueueSelection',
-    name: 'QueueSelection',
-    component: ()=> import('@/pages/QueueSelection.vue')
-  },
-  {
-    path: '/TokenDisplay',
-    name: 'TokenDisplay',
-    component: ()=> import('@/pages/TokenDisplay.vue')
-  },
-  {
-    path: '/bed_management',
-    name: 'bed_management',
-    component: ()=> import('@/pages/bed_management.vue')
-  },
+  { path: '/', name: 'Home' },
+  { path: '/waitlist', name: 'Waitlist', component: () => import('@/pages/Waitlist.vue') },
+  { path: '/Register', name: 'Register', component: () => import('@/pages/Register.vue') },
+  { path: '/Appointment', name: 'Appointment', component: () => import('@/pages/Appointment.vue') },
+  { path: '/Booking_confirmation', name: 'Booking_confirmation', component: () => import('@/pages/Booking_confirmation.vue') },
+  { path: '/BookingSuccess', name: 'BookingSuccess', component: () => import('@/pages/BookingSuccess.vue') },
+  { path: '/kiosk', name: 'Kiosk', component: () => import('@/pages/Kiosk.vue') },
+  { path: '/QueueSelection', name: 'QueueSelection', component: () => import('@/pages/QueueSelection.vue') },
+  { path: '/TokenDisplay', name: 'TokenDisplay', component: () => import('@/pages/TokenDisplay.vue') },
+  { path: '/bed_management', name: 'bed_management', component: () => import('@/pages/bed_management.vue') },
 ]
 
-let router = createRouter({
-  history: createWebHistory('/healthcare'),
+const router = createRouter({
+  // AI Studio opens the Vite preview at /. The real installed Marley app still
+  // uses /healthcare exactly as upstream expects.
+  history: createWebHistory(isAIStudioPreview ? '/' : '/healthcare'),
   routes,
 })
 
 router.beforeEach(async (to, from, next) => {
   if (isAIStudioPreview) {
-    if (to.name === 'Home') {
-      next({ name: 'Waitlist' })
-    } else {
-      next()
-    }
+    if (to.name === 'Home') next({ name: 'Waitlist' })
+    else next()
     return
   }
 
