@@ -8,8 +8,9 @@ export default defineConfig({
   plugins: [
     frappeui({
       frappeProxy: false,
-      lucideIcons: true,
       jinjaBootData: false,
+      buildConfig: false,
+      lucideIcons: true,
     }),
     vue(),
   ],
