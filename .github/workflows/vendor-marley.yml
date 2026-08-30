@@ -1,0 +1,61 @@
+name: Vendor Marley Sources
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/vendor-marley.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  vendor:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout bundle repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Clone upstream Marley sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf vendor
+          mkdir -p vendor
+
+          git clone --depth 1 --branch version-16 https://github.com/earthians/marley.git /tmp/marley
+          git clone --depth 1 --branch develop https://github.com/earthians/marley_frontend.git /tmp/marley_frontend
+
+          MARLEY_SHA=$(git -C /tmp/marley rev-parse HEAD)
+          FRONTEND_SHA=$(git -C /tmp/marley_frontend rev-parse HEAD)
+
+          rm -rf /tmp/marley/.git /tmp/marley_frontend/.git
+          cp -a /tmp/marley vendor/marley
+          cp -a /tmp/marley_frontend vendor/marley_frontend
+
+          cat > UPSTREAM_VERSIONS.md <<EOF
+          # Vendored Upstream Versions
+
+          Generated automatically by GitHub Actions.
+
+          - Marley Health branch: \`version-16\`
+          - Marley Health commit: \`${MARLEY_SHA}\`
+          - Marley Frontend branch: \`develop\`
+          - Marley Frontend commit: \`${FRONTEND_SHA}\`
+          EOF
+
+      - name: Commit vendored sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add vendor UPSTREAM_VERSIONS.md
+          if git diff --cached --quiet; then
+            echo 'No upstream changes to commit.'
+            exit 0
+          fi
+          git commit -m 'Vendor Marley Health and Marley Frontend sources'
+          git push
