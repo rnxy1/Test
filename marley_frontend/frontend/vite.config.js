@@ -3,13 +3,15 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import frappeui from 'frappe-ui/vite'
 
+const isAIStudioPreview = process.env.VITE_AI_STUDIO_PREVIEW === '1'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     frappeui({
-      frappeProxy: true,
+      frappeProxy: !isAIStudioPreview,
       lucideIcons: true,
-      jinjaBootData: true,
+      jinjaBootData: !isAIStudioPreview,
       buildConfig: {
         indexHtmlPath: '../marley_frontend/www/healthcare.html',
         emptyOutDir: true,
