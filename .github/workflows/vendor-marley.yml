@@ -1,4 +1,4 @@
-name: Vendor Marley Sources
+name: Vendor Full Marley Stack
 
 on:
   workflow_dispatch:
@@ -18,20 +18,27 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Clone upstream Marley sources
+      - name: Clone complete upstream stack
         shell: bash
         run: |
           set -euo pipefail
           rm -rf vendor
           mkdir -p vendor
 
+          git clone --depth 1 --branch version-16 https://github.com/frappe/frappe.git /tmp/frappe
+          git clone --depth 1 --branch version-16 https://github.com/frappe/erpnext.git /tmp/erpnext
           git clone --depth 1 --branch version-16 https://github.com/earthians/marley.git /tmp/marley
           git clone --depth 1 --branch develop https://github.com/earthians/marley_frontend.git /tmp/marley_frontend
 
+          FRAPPE_SHA=$(git -C /tmp/frappe rev-parse HEAD)
+          ERPNEXT_SHA=$(git -C /tmp/erpnext rev-parse HEAD)
           MARLEY_SHA=$(git -C /tmp/marley rev-parse HEAD)
           FRONTEND_SHA=$(git -C /tmp/marley_frontend rev-parse HEAD)
 
-          rm -rf /tmp/marley/.git /tmp/marley_frontend/.git
+          rm -rf /tmp/frappe/.git /tmp/erpnext/.git /tmp/marley/.git /tmp/marley_frontend/.git
+
+          cp -a /tmp/frappe vendor/frappe
+          cp -a /tmp/erpnext vendor/erpnext
           cp -a /tmp/marley vendor/marley
           cp -a /tmp/marley_frontend vendor/marley_frontend
 
@@ -40,6 +47,10 @@ jobs:
 
           Generated automatically by GitHub Actions.
 
+          - Frappe Framework branch: \`version-16\`
+          - Frappe Framework commit: \`${FRAPPE_SHA}\`
+          - ERPNext branch: \`version-16\`
+          - ERPNext commit: \`${ERPNEXT_SHA}\`
           - Marley Health branch: \`version-16\`
           - Marley Health commit: \`${MARLEY_SHA}\`
           - Marley Frontend branch: \`develop\`
@@ -57,5 +68,5 @@ jobs:
             echo 'No upstream changes to commit.'
             exit 0
           fi
-          git commit -m 'Vendor Marley Health and Marley Frontend sources'
+          git commit -m 'Vendor full Frappe ERPNext Marley stack'
           git push
