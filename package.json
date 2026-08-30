@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "postinstall": "npm --prefix marley_frontend/frontend install",
-    "dev": "npm --prefix marley_frontend/frontend run dev -- --host 0.0.0.0 --port 8080",
+    "dev": "cd marley_frontend/frontend && VITE_AI_STUDIO_PREVIEW=1 npm run dev -- --host 0.0.0.0 --port 8080",
     "build": "npm --prefix marley_frontend/frontend run build"
   }
 }
