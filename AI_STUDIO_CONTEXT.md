@@ -1,56 +1,51 @@
-# AI Studio Context — Full Marley / Frappe Source Bundle
+# Google AI Studio Context
 
-This repository is a complete source-analysis bundle intended for import into Google AI Studio.
+## Purpose
 
-## Included source trees
+This repository is a deliberately small source bundle for exploring **Marley Health** and especially **Marley Frontend** in Google AI Studio.
 
-### Frappe Framework
-Path: `vendor/frappe/`
+Do not rebuild Frappe or ERPNext inside this repository unless explicitly requested. Their source was removed intentionally to keep AI Studio context focused.
 
-Upstream: https://github.com/frappe/frappe
-Branch: `version-16`
+## Repository layout
 
-Use this to understand the framework runtime, DocTypes, permissions, APIs, hooks, server behavior, desk architecture, background jobs, realtime behavior, and infrastructure relied on by ERPNext and Marley.
+- `marley/` — Marley Health backend/domain app, upstream `earthians/marley`, branch `version-16`.
+- `marley_frontend/` — modern Vue 3 frontend, upstream `earthians/marley_frontend`, branch `develop`.
+- `package.json` — root launcher for AI Studio preview.
 
-### ERPNext
-Path: `vendor/erpnext/`
+## Primary frontend
 
-Upstream: https://github.com/frappe/erpnext
-Branch: `version-16`
+Treat this as the main application when the user asks to preview, analyze, redesign, or experiment with the UI:
 
-Use this for accounting, invoices, payments, allocations, receivables, journals, reversals, reconciliation, users/roles, HR and the ERP concepts Marley integrates with.
+`marley_frontend/frontend/`
 
-### Marley Health
-Path: `vendor/marley/`
+Technology:
 
-Upstream: https://github.com/earthians/marley
-Branch: `version-16`
+- Vue 3
+- Vite
+- Frappe UI
+- Tailwind CSS
+- Vue Router
+- Socket.IO client
 
-Use this for healthcare domain logic, patient records, appointments, encounters, practitioners, clinical records, therapy, billing integration, validation rules, healthcare workflows, and patient history.
+The original frontend development command is run from `marley_frontend/frontend` with `yarn dev`. The root package delegates to that app so AI Studio can start from the repository root with `npm run dev`.
 
-### Marley Frontend
-Path: `vendor/marley_frontend/`
+## Runtime reality
 
-Upstream: https://github.com/earthians/marley_frontend
-Branch: `develop`
+Marley Frontend is not truly standalone. Its Vite configuration enables the Frappe proxy and many views call Frappe/Marley APIs. Therefore:
 
-Use this for the modern Marley UI, appointment desk, registration, waitlist, check-in, queue/token workflows, kiosk, payment UX, reusable components, navigation patterns, and frontend/backend API relationships.
+1. Frontend source, layout, components, routes, styles, forms, navigation, and UX can be inspected and modified here.
+2. Backend-dependent data will not be real in a frontend-only AI Studio preview.
+3. Do not delete backend API calls merely to make a static preview unless the user asks for a mock/demo mode.
+4. If creating a mock/demo mode, keep it isolated and reversible; do not replace production API integrations.
 
-## Important architecture note
+## Key frontend routes
 
-All four upstream codebases are copied into this repository for AI analysis.
+- `/healthcare/` — home/redirect to Waitlist
+- `/healthcare/waitlist` — appointment desk
+- `/healthcare/kiosk` — patient self-service kiosk
+- `/healthcare/QueueSelection` — queue selection
+- `/healthcare/bed_management` — bed management
 
-This does NOT mean they form a standalone runnable monorepo simply by being placed next to each other. Their original installation and runtime relationships still apply.
+## Goal
 
-When analyzing the system:
-
-1. Read the actual source code rather than only README files.
-2. Trace Marley Frontend actions into Marley/Frappe APIs and DocTypes.
-3. Trace Marley billing behavior into ERPNext where applicable.
-4. Distinguish domain concepts, backend invariants, frontend UX patterns, and framework-specific implementation details.
-5. Treat `UPSTREAM_VERSIONS.md` as the record of the exact imported commits.
-6. Do not assume a feature belongs in another project merely because it exists upstream; evaluate suitability first.
-
-## Intended use
-
-The primary purpose of this repository is deep AI-assisted inspection, comparison, architecture study, and selective adaptation of mature healthcare workflows into another system.
+When imported into AI Studio, prioritize letting the user understand and experiment with the Marley Frontend UI without flooding the model context with the entire Frappe and ERPNext frameworks.

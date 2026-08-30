@@ -1,42 +1,50 @@
-# Full Marley / Frappe AI Studio Source Bundle
+# Marley + Marley Frontend — AI Studio Bundle
 
-This repository is a disposable source bundle for importing into Google AI Studio and studying the complete Marley stack in one place.
+This repository is intentionally reduced to only the two Marley projects needed for frontend inspection:
 
-It contains:
+- `marley/` — Marley Health source, branch `version-16`
+- `marley_frontend/` — modern Marley Frontend source, branch `develop`
 
-- `vendor/frappe/` — full Frappe Framework source, branch `version-16`
-- `vendor/erpnext/` — full ERPNext source, branch `version-16`
-- `vendor/marley/` — full Marley Health source, branch `version-16`
-- `vendor/marley_frontend/` — full modern Marley Frontend source, branch `develop`
-- `UPSTREAM_VERSIONS.md` — exact upstream commit SHAs currently copied into this repository
-- `AI_STUDIO_CONTEXT.md` — guidance for AI Studio when analyzing the bundle
+Frappe Framework and ERPNext source trees are intentionally **not included** so the repository stays smaller and easier for Google AI Studio to import and analyze.
 
-## Try the complete stack in GitHub Codespaces
+## Use in Google AI Studio
 
-This repo now also includes a one-click Codespaces runtime for Frappe v16 + ERPNext v16 + Marley Health v16 + Marley Frontend.
+Import this GitHub repository directly:
 
-Open **Code → Codespaces → Create codespace on main**. The environment automatically builds the four-app stack, creates the test site, and forwards port `8080`.
+`rnxy1/Test`
 
-Login: `Administrator` / `admin`
+The repository root contains a small launcher `package.json`. AI Studio can use the normal Node workflow:
 
-- `/app` — Frappe / ERPNext / Marley Desk
-- `/healthcare` — Marley Frontend
+```bash
+npm install
+npm run dev
+```
 
-See `DEMO.md` for the short instructions.
+That delegates directly to `marley_frontend/frontend`, the Vue 3 + Vite application.
 
-## Important
+## What to inspect
 
-This is not the Royal Clinic production repository.
+The frontend source is under:
 
-Do not connect this repository to the Royal Clinic Firebase production project.
+`marley_frontend/frontend/`
 
-The four projects are copied together for source inspection and AI analysis. Their original runtime relationships still apply; placing their source trees in one repository does not by itself convert them into a standalone monorepo.
+Useful routes defined by Marley Frontend include:
 
-## Upstream sources
+- `/healthcare/`
+- `/healthcare/waitlist`
+- `/healthcare/kiosk`
+- `/healthcare/QueueSelection`
+- `/healthcare/bed_management`
 
-- Frappe Framework: https://github.com/frappe/frappe/tree/version-16
-- ERPNext: https://github.com/frappe/erpnext/tree/version-16
+## Important limitation
+
+Marley Frontend was designed to run on top of Frappe + ERPNext + Marley Health and proxies API calls to that backend. This repository is optimized for **frontend preview, code inspection, and AI Studio experimentation**, not a complete healthcare server.
+
+Screens or actions that require live patients, appointments, authentication, payments, queues, beds, or other server data may not function without a Frappe backend.
+
+## Upstream projects
+
 - Marley Health: https://github.com/earthians/marley/tree/version-16
 - Marley Frontend: https://github.com/earthians/marley_frontend
 
-The vendoring workflow can be run again later to refresh all four source trees and records the exact upstream SHAs in `UPSTREAM_VERSIONS.md`.
+See `UPSTREAM_VERSIONS.md` for the exact copied commits.
