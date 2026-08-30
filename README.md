@@ -1,56 +1,74 @@
-# Marley + Marley Frontend — AI Studio Bundle
+# Marley + Marley Frontend — AI Studio Demo
 
-This repository is intentionally reduced to the two Marley projects needed for frontend inspection:
+This repository is intentionally focused on the two Marley projects needed for frontend exploration:
 
 - `marley/` — Marley Health source, branch `version-16`
 - `marley_frontend/` — modern Marley Frontend source, branch `develop`
 
-Frappe Framework and ERPNext source trees are intentionally **not included** so the repository stays smaller and easier for Google AI Studio to import and analyze.
+Frappe Framework and ERPNext source trees are intentionally not included so Google AI Studio can focus on Marley and its UI.
 
-## Use in Google AI Studio
+## Try it in Google AI Studio
 
-Import this GitHub repository directly:
+Import:
 
 `rnxy1/Test`
 
-The repository root contains an AI Studio launcher. Use the normal Node workflow:
+Then run from the repository root:
 
 ```bash
 npm install
 npm run dev
 ```
 
-The root launcher starts `marley_frontend/frontend` on port `8080` with `VITE_AI_STUDIO_PREVIEW=1`.
+The launcher starts the Marley Vue/Vite frontend on port `8080` with:
 
-## AI Studio preview mode
+`VITE_AI_STUDIO_PREVIEW=1`
 
-The upstream frontend normally waits for a live Frappe API before mounting and redirects unauthenticated users to Frappe login. This bundle adds a small environment-gated preview compatibility layer so AI Studio can display the frontend without a Frappe bench:
+Open the preview root. In demo mode `/` redirects to the populated Appointment Desk.
 
-- mounts the Vue app without waiting for Frappe boot data
-- bypasses the Frappe login redirect only while preview mode is enabled
-- provides a local demo user identity
-- disables the Frappe development proxy requirement
-- avoids opening the realtime socket when no backend exists
+## Full fake-data demo mode
 
-These changes are active only when `VITE_AI_STUDIO_PREVIEW=1`; normal Marley runtime behavior remains intact otherwise.
+The repository now contains a local mock Frappe/Marley API layer at:
 
-## Frontend routes
+`marley_frontend/frontend/src/demo/mockApi.js`
 
-The primary source is:
+When `VITE_AI_STUDIO_PREVIEW=1` is enabled, Marley uses that local layer instead of a real Frappe server. The demo includes populated examples for:
 
-`marley_frontend/frontend/`
+- Appointment Desk with multiple appointment statuses
+- patients and practitioners
+- departments and appointment types
+- booking slots and appointment creation
+- patient kiosk and demo OTP workflow
+- patient registration/profile data
+- queue selection and token displays
+- ward, room and bed management
+- vacant, occupied, cleaning and maintenance room states
+- vitals, rescheduling, payment modes, services and prescription examples
+- common actions such as changing status, booking, scheduling admission and admitting a patient
 
-Useful routes include:
+Several demo actions mutate in-memory state so the UI can be clicked and explored rather than functioning as a screenshot-only mock.
 
-- `/healthcare/`
-- `/healthcare/waitlist`
-- `/healthcare/kiosk`
-- `/healthcare/QueueSelection`
-- `/healthcare/bed_management`
+Demo data is synthetic and is not connected to any real patient or backend. In-memory changes reset when the preview environment restarts.
 
-## What remains backend-dependent
+## Demo routes
 
-The interface can boot for frontend exploration, but real patients, appointments, payments, queues, beds, settings and other healthcare data still come from Frappe/Marley APIs. Those actions may show empty/error states in AI Studio unless a mock backend is added.
+In AI Studio preview mode the useful routes are:
+
+- `/` — redirects to Appointment Desk
+- `/waitlist` — Appointment Desk
+- `/kiosk` — patient self-service kiosk
+- `/Register` — patient registration
+- `/Appointment` — appointment booking
+- `/QueueSelection` — select queue displays
+- `/bed_management` — bed/ward management
+
+The actual installed Marley application still uses `/healthcare/...`; the root-based routes are only for the frontend-only AI Studio preview.
+
+## Isolation from real Marley runtime
+
+The fake backend and authentication bypass activate only when `VITE_AI_STUDIO_PREVIEW=1` is present. Without that flag, the code continues to use the normal Frappe resource fetcher, `/healthcare` router base, authentication, backend APIs and realtime socket behavior.
+
+This makes the demo useful for UI/UX evaluation without converting Marley itself into a standalone application.
 
 ## Upstream projects
 
