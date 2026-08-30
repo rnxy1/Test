@@ -1,10 +1,20 @@
 import path from 'path'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import frappeui from 'frappe-ui/vite'
 
 export default defineConfig({
   base: '/',
-  plugins: [vue()],
+  plugins: [
+    frappeui({
+      lucideIcons: true,
+      frappeProxy: false,
+      frappeTypes: false,
+      jinjaBootData: false,
+      buildConfig: false,
+    }),
+    vue(),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
