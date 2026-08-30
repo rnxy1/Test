@@ -1,28 +1,29 @@
-# Marley AI Studio Source Bundle
+# Full Marley / Frappe AI Studio Source Bundle
 
-This repository is a disposable source bundle for importing into Google AI Studio and studying/adapting Marley Health.
+This repository is a disposable source bundle for importing into Google AI Studio and studying the complete Marley stack in one place.
 
-It is intended to contain:
+It contains:
 
-- `vendor/marley/` — full Marley Health source from `earthians/marley`, branch `version-16`
-- `vendor/marley_frontend/` — full modern Marley Frontend source from `earthians/marley_frontend`, branch `develop`
-- `UPSTREAM_DEPENDENCIES.md` — runtime dependency map for Frappe and ERPNext
+- `vendor/frappe/` — full Frappe Framework source, branch `version-16`
+- `vendor/erpnext/` — full ERPNext source, branch `version-16`
+- `vendor/marley/` — full Marley Health source, branch `version-16`
+- `vendor/marley_frontend/` — full modern Marley Frontend source, branch `develop`
+- `UPSTREAM_VERSIONS.md` — exact upstream commit SHAs currently copied into this repository
+- `AI_STUDIO_CONTEXT.md` — guidance for AI Studio when analyzing the bundle
 
 ## Important
 
-This is **not** the Royal Clinic production repository.
+This is not the Royal Clinic production repository.
 
 Do not connect this repository to the Royal Clinic Firebase production project.
 
-The goal is to let AI Studio inspect the mature Marley healthcare workflows and modern frontend in one GitHub repository.
-
-Marley is a Frappe/ERPNext healthcare application. Frappe and ERPNext are intentionally referenced rather than fully vendored here because they are much larger and would make AI Studio ingestion unnecessarily heavy.
+The four projects are copied together for source inspection and AI analysis. Their original runtime relationships still apply; placing their source trees in one repository does not by itself convert them into a standalone monorepo.
 
 ## Upstream sources
 
+- Frappe Framework: https://github.com/frappe/frappe/tree/version-16
+- ERPNext: https://github.com/frappe/erpnext/tree/version-16
 - Marley Health: https://github.com/earthians/marley/tree/version-16
 - Marley Frontend: https://github.com/earthians/marley_frontend
-- Frappe Framework v16: https://github.com/frappe/frappe/tree/version-16
-- ERPNext v16: https://github.com/frappe/erpnext/tree/version-16
 
-The vendoring workflow records the exact upstream commit SHAs in `UPSTREAM_VERSIONS.md`.
+The vendoring workflow can be run again later to refresh all four source trees and records the exact upstream SHAs in `UPSTREAM_VERSIONS.md`.
