@@ -1,8 +1,18 @@
 # Marley Runtime Dependency Map
 
-This repository vendors the two Marley codebases that are most useful for AI-assisted analysis and UI/workflow adaptation.
+This repository now vendors the complete source trees needed to inspect the Marley stack in one place.
 
-## Vendored
+## Vendored source trees
+
+### Frappe Framework
+- Repository: https://github.com/frappe/frappe.git
+- Branch: `version-16`
+- Destination: `vendor/frappe/`
+
+### ERPNext
+- Repository: https://github.com/frappe/erpnext.git
+- Branch: `version-16`
+- Destination: `vendor/erpnext/`
 
 ### Marley Health
 - Repository: https://github.com/earthians/marley.git
@@ -14,16 +24,11 @@ This repository vendors the two Marley codebases that are most useful for AI-ass
 - Branch: `develop`
 - Destination: `vendor/marley_frontend/`
 
-## Runtime dependencies (referenced, not vendored)
+## Relationship
 
-### Frappe Framework
-- Repository: https://github.com/frappe/frappe.git
-- Branch: `version-16`
+Frappe Framework is the underlying application framework.
+ERPNext runs on Frappe and provides ERP/accounting/business functionality.
+Marley Health runs on Frappe and integrates with ERPNext for healthcare and billing workflows.
+Marley Frontend provides newer UI/workflows on top of the Frappe/ERPNext/Marley runtime.
 
-### ERPNext
-- Repository: https://github.com/frappe/erpnext.git
-- Branch: `version-16`
-
-Marley Health uses Frappe and ERPNext as runtime dependencies. Marley Frontend also assumes the Frappe/ERPNext/Healthcare runtime and Frappe APIs.
-
-For Royal Clinic work, do not blindly copy these runtime dependencies into the Firebase application. Use them to understand upstream behavior and reimplement only the selected concepts in the Royal Clinic architecture.
+All four codebases are included for analysis. The copied layout is for source inspection and does not itself replace the normal Frappe installation process.
