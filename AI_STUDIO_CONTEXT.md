@@ -1,42 +1,56 @@
-# AI Studio Context — Marley Source Bundle
+# AI Studio Context — Full Marley / Frappe Source Bundle
 
-This repository is a source-analysis bundle.
+This repository is a complete source-analysis bundle intended for import into Google AI Studio.
 
-## Primary code to analyze
+## Included source trees
+
+### Frappe Framework
+Path: `vendor/frappe/`
+
+Upstream: https://github.com/frappe/frappe
+Branch: `version-16`
+
+Use this to understand the framework runtime, DocTypes, permissions, APIs, hooks, server behavior, desk architecture, background jobs, realtime behavior, and infrastructure relied on by ERPNext and Marley.
+
+### ERPNext
+Path: `vendor/erpnext/`
+
+Upstream: https://github.com/frappe/erpnext
+Branch: `version-16`
+
+Use this for accounting, invoices, payments, allocations, receivables, journals, reversals, reconciliation, users/roles, HR and the ERP concepts Marley integrates with.
 
 ### Marley Health
 Path: `vendor/marley/`
 
 Upstream: https://github.com/earthians/marley
-Pinned branch at import time: `version-16`
+Branch: `version-16`
 
-Use this for healthcare domain logic, patient records, appointments, encounters, therapy, billing integration, validation rules, and mature workflow behavior.
+Use this for healthcare domain logic, patient records, appointments, encounters, practitioners, clinical records, therapy, billing integration, validation rules, healthcare workflows, and patient history.
 
 ### Marley Frontend
 Path: `vendor/marley_frontend/`
 
 Upstream: https://github.com/earthians/marley_frontend
-Pinned branch at import time: `develop`
+Branch: `develop`
 
-Use this for the modern Marley UI, appointment desk, registration, waitlist, check-in, queue/token workflows, kiosk, payment UX, reusable frontend components, and navigation patterns.
+Use this for the modern Marley UI, appointment desk, registration, waitlist, check-in, queue/token workflows, kiosk, payment UX, reusable components, navigation patterns, and frontend/backend API relationships.
 
-## Runtime dependencies not copied into this repository
+## Important architecture note
 
-Marley is not standalone. Its runtime depends on:
+All four upstream codebases are copied into this repository for AI analysis.
 
-- Frappe Framework v16: https://github.com/frappe/frappe/tree/version-16
-- ERPNext v16: https://github.com/frappe/erpnext/tree/version-16
+This does NOT mean they form a standalone runnable monorepo simply by being placed next to each other. Their original installation and runtime relationships still apply.
 
-Do not assume this repository can run by itself without those dependencies.
+When analyzing the system:
+
+1. Read the actual source code rather than only README files.
+2. Trace Marley Frontend actions into Marley/Frappe APIs and DocTypes.
+3. Trace Marley billing behavior into ERPNext where applicable.
+4. Distinguish domain concepts, backend invariants, frontend UX patterns, and framework-specific implementation details.
+5. Treat `UPSTREAM_VERSIONS.md` as the record of the exact imported commits.
+6. Do not assume a feature belongs in another project merely because it exists upstream; evaluate suitability first.
 
 ## Intended use
 
-The repository is primarily meant for AI-assisted inspection, comparison, UI/workflow study, and later selective adaptation into another application.
-
-When analyzing it:
-
-1. Inspect the real source code, not only README files.
-2. Distinguish Marley backend/domain behavior from Marley Frontend UI behavior.
-3. Trace important frontend actions back to the backend APIs/DocTypes they depend on.
-4. Identify reusable healthcare workflows and invariants rather than blindly copying Frappe-specific implementation details.
-5. Treat `UPSTREAM_VERSIONS.md` as the record of the exact imported upstream commits.
+The primary purpose of this repository is deep AI-assisted inspection, comparison, architecture study, and selective adaptation of mature healthcare workflows into another system.
