@@ -3,7 +3,13 @@ import { createResource } from 'frappe-ui'
 import { users } from './users'
 import router from '@/router'
 
+const isAIStudioPreview = import.meta.env.VITE_AI_STUDIO_PREVIEW === '1'
+
 export function sessionUser() {
+  if (isAIStudioPreview) {
+    return 'demo@marley.local'
+  }
+
   let cookies = new URLSearchParams(document.cookie.split('; ').join('&'))
   let _sessionUser = cookies.get('user_id')
   if (_sessionUser === 'Guest') {
