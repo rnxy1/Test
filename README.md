@@ -11,6 +11,19 @@ It contains:
 - `UPSTREAM_VERSIONS.md` — exact upstream commit SHAs currently copied into this repository
 - `AI_STUDIO_CONTEXT.md` — guidance for AI Studio when analyzing the bundle
 
+## Try the complete stack in GitHub Codespaces
+
+This repo now also includes a one-click Codespaces runtime for Frappe v16 + ERPNext v16 + Marley Health v16 + Marley Frontend.
+
+Open **Code → Codespaces → Create codespace on main**. The environment automatically builds the four-app stack, creates the test site, and forwards port `8080`.
+
+Login: `Administrator` / `admin`
+
+- `/app` — Frappe / ERPNext / Marley Desk
+- `/healthcare` — Marley Frontend
+
+See `DEMO.md` for the short instructions.
+
 ## Important
 
 This is not the Royal Clinic production repository.
