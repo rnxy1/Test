@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { session } from './data/session'
 import { users } from './data/users'
 
+const isAIStudioPreview = import.meta.env.VITE_AI_STUDIO_PREVIEW === '1'
+
 const routes = [
   {
     path: '/',
@@ -47,11 +49,6 @@ const routes = [
     name: 'TokenDisplay',
     component: ()=> import('@/pages/TokenDisplay.vue')
   },
-  // {
-  //   path: '/practitioner_screen',
-  //   name: 'practitioner_screen',
-  //   component: ()=> import('@/pages/practitioner_screen.vue')
-  // },
   {
     path: '/bed_management',
     name: 'bed_management',
@@ -65,6 +62,15 @@ let router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+  if (isAIStudioPreview) {
+    if (to.name === 'Home') {
+      next({ name: 'Waitlist' })
+    } else {
+      next()
+    }
+    return
+  }
+
   let isLoggedIn = session.isLoggedIn
   try {
     await users.promise
