@@ -1,0 +1,14 @@
+[
+  {
+    "url": "https://github.com/frappe/erpnext.git",
+    "branch": "version-16"
+  },
+  {
+    "url": "https://github.com/earthians/marley.git",
+    "branch": "version-16"
+  },
+  {
+    "url": "https://github.com/earthians/marley_frontend.git",
+    "branch": "develop"
+  }
+]
