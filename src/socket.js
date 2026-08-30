@@ -1,28 +1,39 @@
 import { io } from 'socket.io-client'
-import { socketio_port } from '../../../../sites/common_site_config.json'
 import { getCachedListResource, getCachedResource } from 'frappe-ui'
 
-export function initSocket() {
-  let host = window.location.hostname
-  let siteName = window.site_name ? window.site_name : window.origin;
-  let port = window.location.port ? `:${socketio_port}` : ''
-  let protocol = port ? 'http' : 'https'
-  let url = `${protocol}://${host}${port}/${siteName}`
+const isPreview = import.meta.env.VITE_AI_STUDIO_PREVIEW === '1'
 
-  let socket = io(url, {
+function createNoopSocket() {
+  return {
+    on() {},
+    off() {},
+    emit() {},
+    disconnect() {},
+    connected: false,
+  }
+}
+
+export function initSocket() {
+  if (isPreview) return createNoopSocket()
+
+  const host = window.location.hostname
+  const siteName = window.site_name || window.origin
+  const configuredPort = import.meta.env.VITE_SOCKETIO_PORT
+  const port = configuredPort ? `:${configuredPort}` : ''
+  const protocol = window.location.protocol === 'https:' ? 'https' : 'http'
+  const url = `${protocol}://${host}${port}/${siteName}`
+
+  const socket = io(url, {
     withCredentials: true,
     reconnectionAttempts: 5,
-  });
+  })
 
   socket.on('refetch_resource', (data) => {
-    if (data.cache_key) {
-      let resource =
-        getCachedResource(data.cache_key) ||
-        getCachedListResource(data.cache_key)
-      if (resource) {
-        resource.reload()
-      }
-    }
+    if (!data?.cache_key) return
+    const resource =
+      getCachedResource(data.cache_key) ||
+      getCachedListResource(data.cache_key)
+    resource?.reload?.()
   })
 
   return socket
