@@ -1,0 +1,894 @@
+[
+ {
+  "id": "A01",
+  "label": "Patient name",
+  "type": "text",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "any page header",
+  "note": ""
+ },
+ {
+  "id": "A02",
+  "label": "Age (years)",
+  "type": "number",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "admission sheet, header",
+  "note": ""
+ },
+ {
+  "id": "A03",
+  "label": "Sex",
+  "type": "option",
+  "options": [
+   "Male",
+   "Female"
+  ],
+  "route": "AUTO_OK",
+  "usual_pages": "admission sheet, header",
+  "note": ""
+ },
+ {
+  "id": "A04",
+  "label": "Residence / Address",
+  "type": "text",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "admission sheet, header",
+  "note": ""
+ },
+ {
+  "id": "A05",
+  "label": "Occupation",
+  "type": "text",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "admission sheet",
+  "note": ""
+ },
+ {
+  "id": "A06",
+  "label": "Visitor status",
+  "type": "option",
+  "options": [
+   "Pilgrim / Visitor",
+   "Local resident",
+   "Service worker / Volunteer",
+   "Unknown"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "admission sheet",
+  "note": "Only if explicitly written; WR-003: documented Karbala residence -> Local resident (researcher convention; state it)"
+ },
+ {
+  "id": "A07",
+  "label": "Level of consciousness at ICU admission",
+  "type": "option",
+  "options": [
+   "Conscious",
+   "DLOC",
+   "Unconscious"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "admission sheet, ICU admission note",
+  "note": ""
+ },
+ {
+  "id": "A08",
+  "label": "Additional identification / notes (chart no., statistical no., register no.)",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "any page header, register",
+  "note": ""
+ },
+ {
+  "id": "B01",
+  "label": "Classification",
+  "type": "option",
+  "options": [
+   "Medical Emergency",
+   "Surgical Emergency",
+   "RTA",
+   "Post-op"
+  ],
+  "route": "SPECIALIST",
+  "usual_pages": "admission sheet, ICU admission note",
+  "note": ""
+ },
+ {
+  "id": "B02",
+  "label": "Primary medical diagnosis (as documented; keep provisional/suspected/final apart)",
+  "type": "text",
+  "options": [],
+  "route": "SPECIALIST",
+  "usual_pages": "admission sheet, progress notes, discharge/death note",
+  "note": ""
+ },
+ {
+  "id": "B03",
+  "label": "Primary surgical diagnosis",
+  "type": "text",
+  "options": [],
+  "route": "SPECIALIST",
+  "usual_pages": "admission sheet, operation note",
+  "note": ""
+ },
+ {
+  "id": "B04",
+  "label": "Reason for ICU admission (as documented, verbatim)",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "ICU admission note, referral note",
+  "note": ""
+ },
+ {
+  "id": "B05",
+  "label": "If post-operative: type of operation / date",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "operation note",
+  "note": ""
+ },
+ {
+  "id": "C01",
+  "label": "ICU admission date (DD/MM/YYYY)",
+  "type": "date",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "ICU admission note, ICU register entry",
+  "note": "Actual ICU admission, not ED/ward registration"
+ },
+ {
+  "id": "C02",
+  "label": "ICU admission time",
+  "type": "time",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "ICU admission note, ICU register entry",
+  "note": ""
+ },
+ {
+  "id": "C03",
+  "label": "Referral source",
+  "type": "option",
+  "options": [
+   "Direct admission",
+   "Emergency department",
+   "Other hospital",
+   "Other"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "admission sheet, ICU admission note",
+  "note": ""
+ },
+ {
+  "id": "C04",
+  "label": "Early referral",
+  "type": "option",
+  "options": [
+   "Yes",
+   "No",
+   "Unknown"
+  ],
+  "route": "SPECIALIST",
+  "usual_pages": "admission sheet",
+  "note": "Definition pending (§15.5): report the documented facts only"
+ },
+ {
+  "id": "C05",
+  "label": "Presenting event / history leading to ICU admission",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "admission sheet, ICU admission note",
+  "note": ""
+ },
+ {
+  "id": "D01",
+  "label": "Vasopressors required",
+  "type": "option",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "route": "AUTO_OK",
+  "usual_pages": "drug/medication chart, progress notes",
+  "note": "\"Yes\" only with drug/date; \"No\" only if the chart says so"
+ },
+ {
+  "id": "D02",
+  "label": "Vasopressor agents",
+  "type": "multi",
+  "options": [
+   "Norepinephrine",
+   "Epinephrine",
+   "Dopamine",
+   "Vasopressin",
+   "Other"
+  ],
+  "route": "AUTO_OK",
+  "usual_pages": "drug/medication chart",
+  "note": ""
+ },
+ {
+  "id": "D03",
+  "label": "Mechanical ventilation required",
+  "type": "option",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "route": "AUTO_OK",
+  "usual_pages": "ventilator chart, progress notes, nursing sheet",
+  "note": ""
+ },
+ {
+  "id": "D04",
+  "label": "Mechanical ventilation duration (days)",
+  "type": "number",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "ventilator chart, progress notes",
+  "note": ""
+ },
+ {
+  "id": "D05",
+  "label": "Trial to extubate",
+  "type": "option",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "progress notes, ventilator chart",
+  "note": ""
+ },
+ {
+  "id": "D06",
+  "label": "Extubation status (as documented)",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "progress notes",
+  "note": ""
+ },
+ {
+  "id": "D07",
+  "label": "Tracheostomy (and date)",
+  "type": "option",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "route": "AUTO_OK",
+  "usual_pages": "progress notes, operation note",
+  "note": ""
+ },
+ {
+  "id": "D08",
+  "label": "Tracheostomy indication",
+  "type": "text",
+  "options": [],
+  "route": "SPECIALIST",
+  "usual_pages": "progress notes",
+  "note": ""
+ },
+ {
+  "id": "D09",
+  "label": "CRRT indication",
+  "type": "multi",
+  "options": [
+   "AKI",
+   "Severe electrolyte disturbance",
+   "Metabolic acidosis",
+   "Fluid overload",
+   "Hemodynamic instability",
+   "Other"
+  ],
+  "route": "SPECIALIST",
+  "usual_pages": "progress notes, dialysis record",
+  "note": ""
+ },
+ {
+  "id": "D10",
+  "label": "CRRT duration",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "dialysis record, progress notes",
+  "note": ""
+ },
+ {
+  "id": "D11",
+  "label": "NG feeding",
+  "type": "option",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "route": "AUTO_OK",
+  "usual_pages": "nursing sheet, progress notes, drug chart",
+  "note": ""
+ },
+ {
+  "id": "E01",
+  "label": "GCS at ICU admission — E component",
+  "type": "number",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "ICU admission note, flow sheet, nursing sheet",
+  "note": "Clearly timed at/near ICU admission. Keep V=T. A later GCS is not admission GCS."
+ },
+ {
+  "id": "E02",
+  "label": "GCS at ICU admission — V component",
+  "type": "number",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "ICU admission note, flow sheet, nursing sheet",
+  "note": "Clearly timed at/near ICU admission. Keep V=T. A later GCS is not admission GCS."
+ },
+ {
+  "id": "E03",
+  "label": "GCS at ICU admission — M component",
+  "type": "number",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "ICU admission note, flow sheet, nursing sheet",
+  "note": "Clearly timed at/near ICU admission. Keep V=T. A later GCS is not admission GCS."
+ },
+ {
+  "id": "E04",
+  "label": "GCS at ICU admission — total as written (e.g. \"15/15\")",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "ICU admission note",
+  "note": "Only a total written in the chart; never compute one"
+ },
+ {
+  "id": "E05",
+  "label": "GCS at ICU discharge / final assessment — E component",
+  "type": "number",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "progress notes, discharge/death note, flow sheet",
+  "note": ""
+ },
+ {
+  "id": "E06",
+  "label": "GCS at ICU discharge / final assessment — V component",
+  "type": "number",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "progress notes, discharge/death note, flow sheet",
+  "note": ""
+ },
+ {
+  "id": "E07",
+  "label": "GCS at ICU discharge / final assessment — M component",
+  "type": "number",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "progress notes, discharge/death note, flow sheet",
+  "note": ""
+ },
+ {
+  "id": "E08",
+  "label": "GCS at ICU discharge / final — total as written",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "progress notes, discharge note",
+  "note": ""
+ },
+ {
+  "id": "F01",
+  "label": "PMH / chronic diseases",
+  "type": "multi",
+  "options": [
+   "None",
+   "DM",
+   "HTN",
+   "IHD",
+   "Heart failure",
+   "CKD",
+   "COPD",
+   "Asthma",
+   "Liver disease",
+   "Neurological disease",
+   "Malignancy",
+   "Other"
+  ],
+  "route": "AUTO_OK",
+  "usual_pages": "admission sheet, ICU admission note",
+  "note": "\"None\" only if the chart says so (e.g. \"no PMH\", \"free\")"
+ },
+ {
+  "id": "F02",
+  "label": "Other comorbidities / details",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "admission sheet",
+  "note": ""
+ },
+ {
+  "id": "F03",
+  "label": "PSH",
+  "type": "option",
+  "options": [
+   "No previous operation",
+   "Previous operation"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "admission sheet",
+  "note": ""
+ },
+ {
+  "id": "F04",
+  "label": "PSH — type of operation",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "admission sheet",
+  "note": ""
+ },
+ {
+  "id": "G01",
+  "label": "Drug history (home medications)",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "admission sheet",
+  "note": ""
+ },
+ {
+  "id": "G02",
+  "label": "Drug allergy",
+  "type": "option",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "route": "AUTO_OK",
+  "usual_pages": "admission sheet, drug chart",
+  "note": "\"No\" only for explicit \"NKDA\"/\"no known drug allergy\""
+ },
+ {
+  "id": "G03",
+  "label": "Drug allergy — drug / reaction",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "admission sheet, drug chart",
+  "note": ""
+ },
+ {
+  "id": "H01",
+  "label": "Anemia present",
+  "type": "option",
+  "options": [
+   "No",
+   "Yes",
+   "Unknown"
+  ],
+  "route": "SPECIALIST",
+  "usual_pages": "lab reports",
+  "note": "Threshold pending (§15.4): report Hb facts only"
+ },
+ {
+  "id": "H02",
+  "label": "Hb on ICU admission (g/dL)",
+  "type": "number",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "lab reports, ABG slips",
+  "note": "Within the admission window only; give time"
+ },
+ {
+  "id": "H03",
+  "label": "Blood (RBC) transfused",
+  "type": "option",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "route": "AUTO_OK",
+  "usual_pages": "drug chart, progress notes, nursing sheet",
+  "note": ""
+ },
+ {
+  "id": "H04",
+  "label": "Blood — number of units",
+  "type": "number",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "drug chart, progress notes",
+  "note": ""
+ },
+ {
+  "id": "H05",
+  "label": "Blood — reason",
+  "type": "multi",
+  "options": [
+   "Anemia",
+   "Active bleeding",
+   "Perioperative requirement",
+   "Other"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "progress notes",
+  "note": ""
+ },
+ {
+  "id": "H06",
+  "label": "Plasma transfused",
+  "type": "option",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "drug chart, progress notes",
+  "note": ""
+ },
+ {
+  "id": "H07",
+  "label": "Plasma — number of units",
+  "type": "number",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "drug chart, progress notes",
+  "note": ""
+ },
+ {
+  "id": "H08",
+  "label": "Plasma — reason",
+  "type": "multi",
+  "options": [
+   "Coagulopathy",
+   "Active bleeding",
+   "Massive transfusion",
+   "Perioperative",
+   "Other"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "progress notes",
+  "note": ""
+ },
+ {
+  "id": "H09",
+  "label": "Other blood products",
+  "type": "multi",
+  "options": [
+   "Cryoprecipitate",
+   "Platelets",
+   "FFP",
+   "Albumin",
+   "Other"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "drug chart",
+  "note": ""
+ },
+ {
+  "id": "H10",
+  "label": "Other cost-related resources / transfusions",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "drug chart, progress notes",
+  "note": ""
+ },
+ {
+  "id": "I01",
+  "label": "Bed sore / pressure ulcer",
+  "type": "option",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "nursing sheet, progress notes",
+  "note": ""
+ },
+ {
+  "id": "I02",
+  "label": "Bed sore present on admission",
+  "type": "option",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "nursing sheet",
+  "note": ""
+ },
+ {
+  "id": "I03",
+  "label": "Bed sore developed during ICU stay",
+  "type": "option",
+  "options": [
+   "Yes",
+   "No"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "nursing sheet",
+  "note": ""
+ },
+ {
+  "id": "I04",
+  "label": "Bed sore site / stage",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "nursing sheet",
+  "note": ""
+ },
+ {
+  "id": "I05",
+  "label": "Upper GI bleeding",
+  "type": "option",
+  "options": [
+   "No",
+   "Yes",
+   "Suspected"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "progress notes",
+  "note": ""
+ },
+ {
+  "id": "I06",
+  "label": "UGIB — required OGD",
+  "type": "option",
+  "options": [
+   "Yes",
+   "No",
+   "Conservative treatment"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "progress notes",
+  "note": ""
+ },
+ {
+  "id": "I07",
+  "label": "UGIB — required blood transfusion",
+  "type": "option",
+  "options": [
+   "No",
+   "Yes"
+  ],
+  "route": "STUDENT",
+  "usual_pages": "progress notes",
+  "note": ""
+ },
+ {
+  "id": "I08",
+  "label": "Other ICU complications",
+  "type": "multi",
+  "options": [
+   "Ventilator-associated pneumonia",
+   "Septic shock",
+   "AKI",
+   "Acute respiratory failure",
+   "Arrhythmia",
+   "DVT/PE",
+   "Electrolyte disturbance",
+   "Multi-organ failure",
+   "Other"
+  ],
+  "route": "SPECIALIST",
+  "usual_pages": "progress notes, lab reports",
+  "note": ""
+ },
+ {
+  "id": "I09",
+  "label": "Complications — details, dates, severity",
+  "type": "text",
+  "options": [],
+  "route": "SPECIALIST",
+  "usual_pages": "progress notes",
+  "note": ""
+ },
+ {
+  "id": "J01",
+  "label": "Final ICU outcome",
+  "type": "option",
+  "options": [
+   "Death",
+   "Transferred to Medical Ward",
+   "Transferred to Surgical Ward",
+   "DAMA",
+   "Transferred to Another Hospital"
+  ],
+  "route": "AUTO_OK",
+  "usual_pages": "discharge/death note, progress notes, ICU register",
+  "note": ""
+ },
+ {
+  "id": "J02",
+  "label": "Date of outcome (DD/MM/YYYY)",
+  "type": "date",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "discharge/death note, ICU register",
+  "note": ""
+ },
+ {
+  "id": "J03",
+  "label": "Outcome details / destination / reason",
+  "type": "text",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "discharge/death note",
+  "note": ""
+ },
+ {
+  "id": "K01",
+  "label": "Immediate / primary cause of death",
+  "type": "text",
+  "options": [],
+  "route": "SPECIALIST",
+  "usual_pages": "death note",
+  "note": "NOT_APPLICABLE only if J01 is FOUND as a non-death outcome"
+ },
+ {
+  "id": "K02",
+  "label": "If cardiac arrest — underlying cause",
+  "type": "text",
+  "options": [],
+  "route": "SPECIALIST",
+  "usual_pages": "death note",
+  "note": ""
+ },
+ {
+  "id": "K03",
+  "label": "Date / time of death",
+  "type": "datetime",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "death note",
+  "note": ""
+ },
+ {
+  "id": "K04",
+  "label": "Clinical sequence leading to death / contributing causes",
+  "type": "text",
+  "options": [],
+  "route": "SPECIALIST",
+  "usual_pages": "death note, progress notes",
+  "note": ""
+ },
+ {
+  "id": "L01",
+  "label": "APACHE II raw value — Temperature (°C)",
+  "type": "apache",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "flow sheet, lab reports, ABG slips, nursing sheet",
+  "note": "List EVERY value found in the first 24 h after ICU admission, each with its time. Never mix times. Never substitute SpO2 for PaO2."
+ },
+ {
+  "id": "L02",
+  "label": "APACHE II raw value — Mean arterial pressure, or SBP/DBP (mmHg)",
+  "type": "apache",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "flow sheet, lab reports, ABG slips, nursing sheet",
+  "note": "List EVERY value found in the first 24 h after ICU admission, each with its time. Never mix times. Never substitute SpO2 for PaO2."
+ },
+ {
+  "id": "L03",
+  "label": "APACHE II raw value — Heart rate (/min)",
+  "type": "apache",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "flow sheet, lab reports, ABG slips, nursing sheet",
+  "note": "List EVERY value found in the first 24 h after ICU admission, each with its time. Never mix times. Never substitute SpO2 for PaO2."
+ },
+ {
+  "id": "L04",
+  "label": "APACHE II raw value — Respiratory rate (/min)",
+  "type": "apache",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "flow sheet, lab reports, ABG slips, nursing sheet",
+  "note": "List EVERY value found in the first 24 h after ICU admission, each with its time. Never mix times. Never substitute SpO2 for PaO2."
+ },
+ {
+  "id": "L05",
+  "label": "APACHE II raw value — Oxygenation: FiO2 with PaO2 (and PaCO2)",
+  "type": "apache",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "flow sheet, lab reports, ABG slips, nursing sheet",
+  "note": "List EVERY value found in the first 24 h after ICU admission, each with its time. Never mix times. Never substitute SpO2 for PaO2."
+ },
+ {
+  "id": "L06",
+  "label": "APACHE II raw value — Arterial pH",
+  "type": "apache",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "flow sheet, lab reports, ABG slips, nursing sheet",
+  "note": "List EVERY value found in the first 24 h after ICU admission, each with its time. Never mix times. Never substitute SpO2 for PaO2."
+ },
+ {
+  "id": "L07",
+  "label": "APACHE II raw value — Serum Na (mmol/L)",
+  "type": "apache",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "flow sheet, lab reports, ABG slips, nursing sheet",
+  "note": "List EVERY value found in the first 24 h after ICU admission, each with its time. Never mix times. Never substitute SpO2 for PaO2."
+ },
+ {
+  "id": "L08",
+  "label": "APACHE II raw value — Serum K (mmol/L)",
+  "type": "apache",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "flow sheet, lab reports, ABG slips, nursing sheet",
+  "note": "List EVERY value found in the first 24 h after ICU admission, each with its time. Never mix times. Never substitute SpO2 for PaO2."
+ },
+ {
+  "id": "L09",
+  "label": "APACHE II raw value — Serum creatinine (state unit; note any AKI statement)",
+  "type": "apache",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "flow sheet, lab reports, ABG slips, nursing sheet",
+  "note": "List EVERY value found in the first 24 h after ICU admission, each with its time. Never mix times. Never substitute SpO2 for PaO2."
+ },
+ {
+  "id": "L10",
+  "label": "APACHE II raw value — Hematocrit (%)",
+  "type": "apache",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "flow sheet, lab reports, ABG slips, nursing sheet",
+  "note": "List EVERY value found in the first 24 h after ICU admission, each with its time. Never mix times. Never substitute SpO2 for PaO2."
+ },
+ {
+  "id": "L11",
+  "label": "APACHE II raw value — WBC (x10^3/uL)",
+  "type": "apache",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "flow sheet, lab reports, ABG slips, nursing sheet",
+  "note": "List EVERY value found in the first 24 h after ICU admission, each with its time. Never mix times. Never substitute SpO2 for PaO2."
+ },
+ {
+  "id": "L12",
+  "label": "APACHE II raw value — GCS used for APACHE (E/V/M)",
+  "type": "apache",
+  "options": [],
+  "route": "AUTO_OK",
+  "usual_pages": "flow sheet, lab reports, ABG slips, nursing sheet",
+  "note": "List EVERY value found in the first 24 h after ICU admission, each with its time. Never mix times. Never substitute SpO2 for PaO2."
+ },
+ {
+  "id": "L13",
+  "label": "APACHE II — chronic health points (documented severe organ insufficiency / immunocompromise)",
+  "type": "text",
+  "options": [],
+  "route": "SPECIALIST",
+  "usual_pages": "admission sheet",
+  "note": ""
+ },
+ {
+  "id": "L14",
+  "label": "APACHE II total as written in the chart (if any)",
+  "type": "number",
+  "options": [],
+  "route": "STUDENT",
+  "usual_pages": "admission sheet, flow sheet",
+  "note": "Only if the chart itself writes an APACHE score"
+ }
+]

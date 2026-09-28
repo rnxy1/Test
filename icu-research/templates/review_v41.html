@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ICU Research Review</title>
+<style>
+:root{
+  --page:#f6f8fb;--surface:#fff;--soft:#f8fafc;--muted-bg:#f1f5f9;
+  --text:#102a43;--text-2:#334e68;--muted:#64748b;--border:#dfe7ef;--border-2:#cbd5e1;
+  --brand:#0b3558;--brand-2:#2563eb;--brand-soft:#eff6ff;
+  --g:#15803d;--g-bg:#ecfdf3;--g-bd:#86d5a5;
+  --y:#a16207;--y-bg:#fffbeb;--y-bd:#e7c969;
+  --r:#b42318;--r-bg:#fef3f2;--r-bd:#f3aaa5;
+  --p:#6d28d9;--p-bg:#f5f3ff;--p-bd:#c4b5fd;
+  --s:#475569;--s-bg:#f8fafc;--s-bd:#cbd5e1;
+  --shadow:0 1px 2px rgba(15,23,42,.04),0 12px 32px rgba(15,23,42,.045);
+  --radius:16px;--radius-sm:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--page);color:var(--text);font:14px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased;padding-bottom:84px}
+button,input,textarea,select{font:inherit;color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+.muted{color:var(--muted)} .small{font-size:12px}
+[dir=auto],.ar{unicode-bidi:plaintext}
+/* header */
+.hero{background:var(--surface);border-bottom:1px solid var(--border);padding:18px 0 14px}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.hero h1{margin:4px 0 8px;font-size:24px;line-height:1.2}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--soft);border-radius:999px;padding:4px 10px;font-size:12px}
+.chip b{font-weight:800}
+.chip.ok{background:var(--g-bg);border-color:var(--g-bd);color:var(--g)}
+.chip.warn{background:var(--y-bg);border-color:var(--y-bd);color:var(--y)}
+.progress{margin-top:14px;display:grid;grid-template-columns:1fr auto;gap:6px 12px;align-items:center}
+.bar{height:10px;border-radius:999px;background:var(--muted-bg);overflow:hidden;display:flex}
+.bar span{height:100%}
+.bar .done{background:var(--brand)}
+.prog-label{font-size:12px;color:var(--text-2);white-space:nowrap}
+.reviewer{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.reviewer input{width:84px;border:1px solid var(--border-2);border-radius:8px;padding:5px 8px;background:#fff}
+/* nav */
+.nav{position:sticky;top:0;z-index:5;background:rgba(246,248,251,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:8px 0 0;scrollbar-width:none}
+.tab{border:0;background:none;padding:8px 12px;border-radius:10px 10px 0 0;font-weight:700;color:var(--muted);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent}
+.tab.on{color:var(--brand);border-bottom-color:var(--brand)}
+.tab .n{font-weight:600;font-size:11px;background:var(--muted-bg);border-radius:999px;padding:1px 7px;margin-left:4px}
+.filters{display:flex;gap:6px;overflow-x:auto;padding:8px 0 10px;scrollbar-width:none;align-items:center}
+.f{border:1px solid var(--border);background:#fff;border-radius:999px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+.f.on{outline:2px solid var(--brand);outline-offset:0}
+.search{flex:1 0 160px;min-width:140px;border:1px solid var(--border);border-radius:999px;padding:6px 12px;background:#fff}
+.toggle{display:flex;align-items:center;gap:6px;font-size:12px;white-space:nowrap;color:var(--text-2)}
+/* status */
+.st{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:3px 9px;font-size:11px;font-weight:800;border:1px solid;white-space:nowrap}
+.GREEN{--c:var(--g);--cb:var(--g-bg);--cd:var(--g-bd)} .YELLOW{--c:var(--y);--cb:var(--y-bg);--cd:var(--y-bd)}
+.PURPLE{--c:var(--p);--cb:var(--p-bg);--cd:var(--p-bd)} .RED{--c:var(--r);--cb:var(--r-bg);--cd:var(--r-bd)} .NA{--c:var(--s);--cb:var(--s-bg);--cd:var(--s-bd)}
+.st{color:var(--c);background:var(--cb);border-color:var(--cd)}
+/* section + card */
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:22px 0 8px}
+.sec-h h2{margin:0;font-size:16px}
+.card{background:var(--surface);border:1px solid var(--border);border-left:5px solid var(--c);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px 14px 12px;margin:10px 0}
+.card.decided{border-left-style:double}
+.head{display:flex;align-items:flex-start;gap:8px 10px;flex-wrap:wrap}
+.fid{font-weight:900;font-size:13px;min-width:44px;text-align:center;background:var(--brand);color:#fff;border-radius:8px;padding:6px 8px;line-height:1}
+.fname{flex:1 1 160px;min-width:0;font-weight:700;color:var(--text-2);line-height:1.3;overflow-wrap:anywhere}
+.value{margin:10px 0 4px;font-size:16px;font-weight:700;white-space:pre-wrap;word-break:break-word}
+.value.nf{font-size:14px;font-weight:600;color:var(--r)}
+.opts{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0}
+.opt{font-size:11px;border:1px solid var(--border);border-radius:999px;padding:2px 8px;color:var(--muted)}
+.opt.sel{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:700}
+.why{font-size:12px;color:var(--text-2);background:var(--cb);border:1px solid var(--cd);border-radius:10px;padding:6px 10px;margin:8px 0}
+.why b{color:var(--c)}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0}
+.tag{font-size:11px;border-radius:6px;padding:2px 7px;background:var(--muted-bg);color:var(--text-2)}
+.tag.fail{background:var(--r-bg);color:var(--r);font-weight:700}
+.tag.time{background:var(--brand-soft);color:var(--brand-2)}
+/* evidence strip */
+.ev{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px;scroll-snap-type:x mandatory}
+.tile{flex:0 0 auto;width:220px;scroll-snap-align:start;border:1px solid var(--border);border-radius:12px;background:var(--soft);cursor:pointer;text-align:left;padding:0;overflow:hidden}
+.tile:focus-visible,.f:focus-visible,.tab:focus-visible,.dbtn:focus-visible{outline:3px solid var(--brand-2);outline-offset:2px}
+.tile img{display:block;width:100%;height:92px;object-fit:contain;background:#fff;border-bottom:1px solid var(--border)}
+.tile .tt{padding:6px 8px}
+.tile .sid{font-weight:800;font-size:12px}
+.tile .q{font-size:12px;color:var(--text-2);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.tile.wa{background:#f0fdf4}
+.tile.wa .q{-webkit-line-clamp:5}
+.look{font-size:12px;margin:6px 0}
+.pchips{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.pchip{border:1px solid var(--border);background:#fff;border-radius:8px;padding:3px 7px;font-size:11px;cursor:pointer}
+.pchip.poor{border-color:var(--r-bd);color:var(--r)}
+/* decision */
+.dec{border-top:1px dashed var(--border);margin-top:8px;padding-top:10px}
+.dbtns{display:flex;flex-wrap:wrap;gap:6px}
+.dbtn{border:1px solid var(--border-2);background:#fff;border-radius:10px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer}
+.dbtn.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.dinp{display:grid;grid-template-columns:1fr;gap:6px;margin-top:8px}
+.dinp input,.dinp textarea{width:100%;border:1px solid var(--border-2);border-radius:10px;padding:7px 10px;background:#fff;resize:vertical}
+.stamp{font-size:11px;color:var(--g);font-weight:700;margin-top:6px}
+.blindbox{background:var(--brand-soft);border:1px solid #bfd3fb;border-radius:10px;padding:8px 10px;margin-top:8px;font-size:12px}
+.blindbox input{margin-top:6px;width:100%;border:1px solid var(--border-2);border-radius:8px;padding:6px 8px}
+.hidden{display:none!important}
+.guide{border:1px solid var(--border);border-radius:12px;padding:8px 10px;margin:8px 0;font-size:12px;background:var(--soft)}
+.guide.LOW{background:var(--g-bg);border-color:var(--g-bd)} .guide.HIGH{background:var(--y-bg);border-color:var(--y-bd)}
+.guide.NOTPHOTO{background:var(--muted-bg);border-color:var(--border-2)} .guide.MEDIUM{background:var(--y-bg);border-color:var(--y-bd)}
+.guide .gl{font-weight:800;font-size:12.5px}
+.note{width:100%;border:1px solid var(--border-2);border-radius:10px;padding:6px 10px;background:#fff;resize:vertical;min-height:34px;margin-top:8px}
+.note:focus{min-height:64px}
+.sec-form{margin:4px 0 8px}
+.list-item{border-top:1px solid var(--border);padding:8px 0}
+.list-item:first-child{border-top:0}
+.list-item b{color:var(--brand)}
+.count-pill{font-size:11px;background:var(--muted-bg);border-radius:999px;padding:1px 8px;margin-left:6px;color:var(--text-2)}
+/* form view */
+.form-img{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:6px 0 10px}
+.form-img img{display:block;width:100%}
+details>summary{cursor:pointer;font-weight:700;color:var(--text-2);padding:6px 0}
+.rows{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.row{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:center;padding:9px 12px;border-top:1px solid var(--border);cursor:pointer}
+.row:first-child{border-top:0}
+.row:hover{background:var(--soft)}
+.row .rid{font-weight:900;font-size:12px;color:var(--brand)}
+.row .rv{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .rn{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--c);display:inline-block}
+/* pages */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:12px}
+.pg{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;text-align:left;padding:0}
+.pg img{display:block;width:100%;height:170px;object-fit:cover;object-position:top}
+.pg .pt{padding:6px 8px;font-size:12px}
+.pg.poor{border-color:var(--r-bd)}
+.retake{color:var(--r);font-weight:800}
+/* audit */
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:12px 14px;margin:12px 0}
+.panel h3{margin:0 0 8px;font-size:15px}
+.tl{border-left:3px solid var(--border-2);padding:2px 0 8px 12px;margin-left:4px}
+.tl b{display:block}
+table.ctx{width:100%;border-collapse:collapse;font-size:12px}
+table.ctx td,table.ctx th{border-top:1px solid var(--border);padding:5px 6px;vertical-align:top;text-align:left}
+tr.cur td{background:var(--g-bg);font-weight:700}
+tr.rej td{color:var(--muted)}
+.kv{display:grid;grid-template-columns:minmax(120px,200px) 1fr;gap:4px 12px;font-size:13px}
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.62);display:none;z-index:20;align-items:flex-end;justify-content:center}
+.modal.open{display:flex}
+.mbox{background:#fff;width:min(980px,100%);max-height:94vh;overflow:auto;border-radius:18px 18px 0 0;padding:14px 16px 24px}
+@media(min-width:760px){.modal{align-items:center}.mbox{border-radius:18px}}
+.mhead{display:flex;justify-content:space-between;align-items:center;gap:10px;position:sticky;top:-14px;background:#fff;padding:6px 0 8px;border-bottom:1px solid var(--border);z-index:1}
+.mhead h3{margin:0;font-size:15px}
+.close{border:1px solid var(--border-2);background:#fff;border-radius:10px;padding:6px 12px;font-weight:700;cursor:pointer}
+.mbox img{max-width:100%;display:block;border:1px solid var(--border);border-radius:10px;margin:8px 0}
+.lbl{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-top:12px}
+.lbl.green{color:var(--g)}
+.msg{white-space:pre-wrap;background:#f0fdf4;border:1px solid #bbe5c8;border-radius:12px;padding:10px 12px;font-size:13px}
+mark{background:#fde68a;border-radius:3px;padding:0 2px}
+.copyrow{display:flex;gap:6px;margin-top:6px}
+.copyrow input{flex:1;border:1px solid var(--border-2);border-radius:8px;padding:6px 8px}
+.drive{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--brand-2);text-decoration:none;font-weight:700;margin-top:6px}
+/* bottom bar */
+.bottom{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid var(--border);z-index:10;padding:10px 0 calc(10px + env(safe-area-inset-bottom))}
+.bottom .wrap{display:flex;gap:8px;align-items:center}
+.primary{background:var(--brand);color:#fff;border:0;border-radius:12px;padding:10px 14px;font-weight:800;cursor:pointer}
+.ghost{background:#fff;border:1px solid var(--border-2);border-radius:12px;padding:9px 12px;font-weight:700;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--brand);color:#fff;border-radius:10px;padding:8px 14px;font-size:13px;opacity:0;transition:opacity .2s;z-index:30;pointer-events:none}
+.toast.show{opacity:1}
+@media(max-width:520px){.hero h1{font-size:21px}.tile{width:78vw}.value{font-size:15px}.bottom .hide-s{display:none}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap" id="hero"></div></header>
+<div class="nav"><div class="wrap">
+  <div class="tabs" role="tablist" id="tabs"></div>
+  <div class="filters" id="filters"></div>
+</div></div>
+<main class="wrap" id="main"></main>
+<div class="bottom"><div class="wrap">
+  <button class="primary" id="copyBtn">Copy decisions</button>
+  <button class="ghost" id="csvBtn">CSV</button>
+  <button class="ghost hide-s" id="jsonBtn">JSON</button>
+  <span class="small muted" id="saveState" style="margin-left:auto"></span>
+</div></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true"><div class="mbox" id="mbox"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script id="review-data" type="application/json">__DATA__</script>
+<script>
+const D=JSON.parse(document.getElementById('review-data').textContent);
+const A=k=>typeof k==='string'&&k.startsWith('asset:')?(D.assets[k.slice(6)]||''):(k||'');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $=id=>document.getElementById(id);
+const LBL={GREEN:'🟢 Auto',YELLOW:'🟡 Student review',PURPLE:'🟣 Specialist review',RED:'🔴 Search required',NA:'Not applicable'};
+const NEED=['YELLOW','PURPLE','RED'];
+const ACTIONS=[['accept','✓ Accept'],['correct','✎ Correct'],['searched_no','∅ Searched — not documented'],['ask_icu','❓ Missing — ask ICU'],['escalate','↑ Specialist'],['na','Not applicable']];
+const FIELDS=D.sections.flatMap(s=>s.fields.map(f=>({...f,sec:s.id})));
+const byId=Object.fromEntries(FIELDS.map(f=>[f.id,f]));
+const KEY='icu-review-v41:'+D.meta.patient;
+let S={dec:{},who:'',tab:'review',filter:'all',q:'',blind:false};
+try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');S.dec=x.dec||{};S.who=x.who||''}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({dec:S.dec,who:S.who}));$('saveState').textContent='Saved on this device'}catch(e){$('saveState').textContent='Not saved (storage blocked) — copy before closing'}}
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1600)}
+const dec=id=>S.dec[id]||{};
+const decided=f=>!!(dec(f.id).a||String(dec(f.id).n||'').trim());
+const required=()=>FIELDS.filter(f=>NEED.includes(f.route));
+const actLabel=(f,a)=>a==='searched_no'?(f.absent?`∅ Searched — not documented → ${f.absent}`:'∅ Searched — not documented'):(ACTIONS.find(x=>x[0]===a)||[0,a])[1];
+function hi(text,terms){let h=esc(text);(terms||[]).filter(Boolean).sort((a,b)=>b.length-a.length).forEach(t=>{const e=esc(t);if(e.length>1)h=h.split(e).join('<mark>'+e+'</mark>')});return h}
+function lists(){
+  const spec=[],icu=[];
+  for(const f of FIELDS){const d=dec(f.id);
+    if(f.route==='PURPLE'||d.a==='escalate')spec.push({f,why:d.a==='escalate'?'escalated by '+(d.i||'reviewer'):'clinical-interpretation field',note:d.n||''});
+    if(d.a==='ask_icu')icu.push({f,why:f.readerStatus==='CANNOT_ASSESS'?'page type not photographed':'searched, not found',note:d.n||''})}
+  return {spec,icu};
+}
+function hero(){
+  const m=D.meta,req=required(),done=req.filter(decided).length,pct=req.length?done/req.length*100:100;
+  $('hero').innerHTML=`<div class="eyebrow">ICU Arbaeen study · Research review · protocol ${esc(m.protocol)}</div>
+  <h1 dir="auto">${esc(m.patient)}</h1>
+  <div class="chips">
+    <span class="chip ${m.eligibility.ok?'ok':'warn'}">${m.eligibility.ok?'✓':'!'} <b>${esc(m.eligibility.label)}</b></span>
+    <span class="chip">ICU admission <b dir="auto">${esc(m.admission||'unresolved')}</b></span>
+    ${m.registerNo?`<span class="chip">Register no. <b>${esc(m.registerNo)}</b></span>`:''}
+    <span class="chip">Sources <b>${m.sourceCounts.chart}</b> chart · <b>${m.sourceCounts.wa}</b> WhatsApp</span>
+    <span class="chip">Reader <b>${esc(m.reader)}</b></span>
+  </div>
+  <div class="progress"><div class="bar" title="${done} of ${req.length} decided"><span class="done" style="width:${pct.toFixed(1)}%"></span></div>
+  <div class="prog-label"><b>${done}</b> / ${req.length} decisions · ${req.length-done} left</div>
+  <div class="reviewer">Reviewer initials <input id="who" maxlength="6" value="${esc(S.who)}" placeholder="e.g. HM" aria-label="Reviewer initials"></div></div>
+  <p class="small muted" style="margin:10px 0 0">${esc(m.eligibility.detail)}. Every 🟡 🟣 🔴 field needs a decision: press a button <b>or</b> write a note to Claude. 🟢 fields are accepted as shown (blind spot-checks). When done, press <b>Copy for Claude</b> and send the text.</p>`;
+  $('who').oninput=e=>{S.who=e.target.value.trim();save()};
+}
+function tabs(){
+  const L=lists();
+  const t=[['review','Review A–L',required().filter(f=>!decided(f)).length+' open'],['pages','Pages',Object.values(D.sources).filter(s=>s.kind==='chart').length],['lists','Lists',L.spec.length+L.icu.length],['audit','Audit',null]];
+  $('tabs').innerHTML=t.map(([k,l,n])=>`<button class="tab ${S.tab===k?'on':''}" role="tab" aria-selected="${S.tab===k}" data-t="${k}">${l}${n!=null?`<span class="n">${n}</span>`:''}</button>`).join('');
+  $('tabs').querySelectorAll('.tab').forEach(b=>b.onclick=()=>{S.tab=b.dataset.t;render();scrollTo(0,0)});
+  const c=D.counts;
+  const F=[['all','All',FIELDS.length],['need','Needs decision',required().length],['RED',LBL.RED,c.RED||0],['YELLOW',LBL.YELLOW,c.YELLOW||0],['PURPLE',LBL.PURPLE,c.PURPLE||0],['GREEN',LBL.GREEN,c.GREEN||0],['NA','N/A',c.NA||0],['open','Not decided yet',null]];
+  $('filters').innerHTML=S.tab==='review'?F.map(([k,l,n])=>`<button class="f ${S.filter===k?'on':''}" data-f="${k}">${l}${n!=null?' · '+n:''}</button>`).join('')+
+   `<input class="search" id="q" placeholder="Search field, value, page…" value="${esc(S.q)}" aria-label="Search">`+
+   `<label class="toggle"><input type="checkbox" id="blind" ${S.blind?'checked':''}> Blind 🟢 check</label>`:'';
+  $('filters').querySelectorAll('.f').forEach(b=>b.onclick=()=>{S.filter=b.dataset.f;render()});
+  if($('q'))$('q').oninput=e=>{S.q=e.target.value;renderMain()};
+  if($('blind'))$('blind').onchange=e=>{S.blind=e.target.checked;renderMain()};
+}
+function visible(f){
+  if(S.filter==='need'&&!NEED.includes(f.route))return false;
+  if(S.filter==='open'&&!(NEED.includes(f.route)&&!decided(f)))return false;
+  if(!['all','need','open'].includes(S.filter)&&f.route!==S.filter)return false;
+  if(S.q){const q=S.q.toLowerCase();if(![f.id,f.name,f.value,(f.ev||[]).map(e=>e.src+' '+e.quote).join(' ')].join(' ').toLowerCase().includes(q))return false}
+  return true;
+}
+function evStrip(f){
+  const tiles=(f.ev||[]).map((e,i)=>{const s=D.sources[e.src]||{};
+    if(s.kind==='wa')return `<button class="tile wa" data-f="${f.id}" data-i="${i}"><div class="tt"><div class="sid">${esc(e.src)} · WhatsApp</div><div class="small muted" dir="auto">${esc(s.sender)} · ${esc(s.ts)}</div><div class="q" dir="auto">${hi(e.quote,[e.quote])}</div></div></button>`;
+    return `<button class="tile" data-f="${f.id}" data-i="${i}">${e.crop?`<img alt="${esc(e.src)} crop" src="${A(e.crop)}">`:''}<div class="tt"><div class="sid">${esc(e.src)} <span class="small muted">${esc(s.type||'')}</span></div><div class="q" dir="auto">“${esc(e.quote)}”${e.when?` <span class="muted">· ${esc(e.when)}</span>`:''}</div></div></button>`}).join('');
+  return tiles?`<div class="ev">${tiles}</div>`:'';
+}
+function pageChips(list){return `<div class="pchips">${list.map(p=>{const s=D.sources[p];if(!s)return `<span class="pchip">${esc(p)}</span>`;return `<button class="pchip ${s.read==='poor'?'poor':''}" data-p="${esc(p)}">${esc(p)} · ${esc((s.type||'').split(/[:(]/)[0].slice(0,26))}${s.read!=='good'?' · '+esc(s.read):''}</button>`}).join('')}</div>`}
+function guideHtml(f){const g=f.guide;if(!g)return '';
+  return `<div class="guide ${g.level}"><div class="gl">${esc(g.label)}</div><div>${esc(g.text)}</div>
+   ${g.pages&&g.pages.length?`<div style="margin-top:4px"><b>Look at:</b>${pageChips(g.pages)}</div>`:''}
+   <div class="muted" style="margin-top:4px"><b>Usually recorded on:</b> ${esc(g.usual)}${g.learned&&g.learned.length?` · <b>found so far on:</b> ${esc(g.learned.join('; '))}`:''}</div>
+   ${g.blurred&&g.blurred.length&&g.level!=='NOTPHOTO'?`<div class="muted">Blurred photos of unknown content (${esc(g.blurred.join(', '))}) could also hold it → retake.</div>`:''}</div>`}
+function card(f){
+  const d=dec(f.id),isG=f.route==='GREEN',blind=S.blind&&isG;
+  const nf=['NOT_FOUND','CANNOT_ASSESS'].includes(f.readerStatus);
+  const opts=f.options.length?`<div class="opts">${f.options.map(([l,s])=>`<span class="opt ${s&&!blind?'sel':''}">${s&&!blind?'✓ ':''}${esc(l)}</span>`).join('')}</div>`:'';
+  const tags=[f.temporal?`<span class="tag time">${esc(f.temporal)}</span>`:'',...(f.checks||[]).filter(c=>c[0]==='FAIL').map(c=>`<span class="tag fail">✖ ${esc(c[1])}</span>`),f.conflict?'<span class="tag fail">Conflicting sources</span>':''].join('');
+  const notPhoto=f.guide&&f.guide.level==='NOTPHOTO';const acts=ACTIONS.filter(([k])=>(k!=='na'||f.sec==='K'||f.readerStatus==='NOT_APPLICABLE'||f.route==='NA')&&!(k==='accept'&&f.route==='RED')&&!(k==='searched_no'&&notPhoto));
+  const btns=isG?(blind?'':`<div class="dbtns"><button class="dbtn ${d.a==='correct'?'on':''}" data-a="correct" data-id="${f.id}">✎ Correct</button><button class="dbtn ${d.a==='escalate'?'on':''}" data-a="escalate" data-id="${f.id}">↑ Specialist</button></div>`)
+    :`<div class="dbtns">${acts.map(([k])=>`<button class="dbtn ${d.a===k?'on':''}" data-a="${k}" data-id="${f.id}">${esc(actLabel(f,k))}</button>`).join('')}</div>`;
+  const valIn=d.a==='correct'?`<div class="dinp"><input data-v="${f.id}" dir="auto" value="${esc(d.v||'')}" placeholder="Correct value + page, e.g. 16/07/2026 (P09)"></div>`:'';
+  const blindBox=blind?`<div class="blindbox"><b>Blind check:</b> open the pages, then type what the source says (value hidden).<input data-blind="${f.id}" value="${esc(d.bv||'')}" placeholder="Value you read" dir="auto">${d.bv?`<div class="small" style="margin-top:4px">${d.bm?'✓ matches the proposed value':'✗ differs from the proposed value — tell the team'}</div>`:''}</div>`:'';
+  const stamp=decided(f)&&!isG?`<div class="stamp">✓ Decided${d.i?' by '+esc(d.i):''}${d.d?' · '+esc(d.d):''}</div>`:'';
+  return `<article class="card ${f.route} ${decided(f)?'decided':''}" id="c-${f.id}">
+   <div class="head"><span class="fid">${esc(f.id)}</span><span class="fname">${esc(f.name)}</span><span class="st">${LBL[f.route]}</span></div>
+   ${blind?'<div class="value muted">Value hidden for blind check</div>':`<div class="value ${nf?'nf':''}" dir="auto">${esc(f.value)}</div>`}
+   ${opts}${tags?`<div class="tags">${tags}</div>`:''}
+   ${!isG&&f.why&&f.why.length&&f.route!=='RED'?`<div class="why"><b>Why ${LBL[f.route].split(' ')[0]}:</b> ${esc(f.why.join('; '))}</div>`:''}
+   ${f.route==='RED'?guideHtml(f):''}
+   ${blind?'':evStrip(f)}
+   ${f.comment&&!blind?`<details><summary class="small">Reader note</summary><div class="small" dir="auto">${esc(f.comment)}</div></details>`:''}
+   <div class="dec">${btns}${valIn}${blindBox}
+     <textarea class="note" data-n="${f.id}" rows="1" dir="auto" placeholder="Note to Claude (optional — or use it instead of a button)">${esc(d.n||'')}</textarea>${stamp}</div></article>`;
+}
+function stampNow(id){S.dec[id]={...dec(id),i:S.who,d:new Date().toLocaleDateString('en-GB')}}
+function bindCards(root){
+  root.querySelectorAll('.dbtn').forEach(b=>b.onclick=()=>{const id=b.dataset.id,a=b.dataset.a,d=dec(id);
+    if(d.a===a){const x={...d};delete x.a;delete x.v;S.dec[id]=x}else{S.dec[id]={...d,a}}stampNow(id);save();rerenderCard(id)});
+  root.querySelectorAll('[data-v]').forEach(i=>i.oninput=()=>{const id=i.dataset.v;S.dec[id]={...dec(id),v:i.value};save()});
+  root.querySelectorAll('[data-n]').forEach(i=>{i.oninput=()=>{const id=i.dataset.n;S.dec[id]={...dec(id),n:i.value};stampNow(id);save()};i.onblur=()=>{hero();tabs()}});
+  root.querySelectorAll('[data-blind]').forEach(i=>i.onchange=()=>{const id=i.dataset.blind,f=byId[id];const nm=s=>String(s||'').toLowerCase().replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[^\p{L}\p{N}]+/gu,'');
+    S.dec[id]={...dec(id),bv:i.value,bm:!!i.value&&(nm(f.value).includes(nm(i.value))||nm(i.value).includes(nm(f.value)))};stampNow(id);save();rerenderCard(id)});
+  root.querySelectorAll('.tile').forEach(t=>t.onclick=()=>openEv(t.dataset.f,+t.dataset.i));
+  root.querySelectorAll('.pchip[data-p]').forEach(p=>p.onclick=()=>openPage(p.dataset.p));
+}
+function rerenderCard(id){const el=$('c-'+id);if(!el)return renderMain();const tmp=document.createElement('div');tmp.innerHTML=card(byId[id]);el.replaceWith(tmp.firstElementChild);bindCards($('c-'+id));hero();tabs()}
+function renderReview(){
+  let h='';for(const s of D.sections){const fs=s.fields.map(f=>byId[f.id]).filter(visible);if(!fs.length)continue;
+    const open=s.fields.filter(f=>NEED.includes(f.route)&&!decided(byId[f.id])).length;
+    h+=`<div class="sec-h"><h2>${esc(s.title)}</h2><span class="small muted">${s.fields.length} fields · ${open} open</span></div>
+    ${s.form?`<details class="sec-form" open><summary class="small">Original form — section ${esc(s.id)}</summary><div class="form-img"><img alt="Form section ${esc(s.id)}" src="${A(s.form)}" loading="lazy"></div></details>`:''}`+fs.map(card).join('')}
+  $('main').innerHTML=h||'<p class="muted" style="margin:30px 0">Nothing in this filter.</p>';bindCards($('main'));
+}
+function renderPages(){
+  const pages=Object.entries(D.sources).filter(([,s])=>s.kind==='chart');
+  const poor=pages.filter(([,s])=>s.read==='poor').map(([k])=>k);
+  $('main').innerHTML=`<div class="panel"><h3>Photographed record</h3><div class="small">${pages.length} pages · page types present: ${esc((D.pageTypes||[]).join(', '))}</div>
+   ${poor.length?`<div class="small retake" style="margin-top:6px">Retake (poor photo): ${poor.join(', ')}</div>`:''}
+   ${(D.missingTypes||[]).length?`<div class="small" style="margin-top:4px"><b>Not photographed (cause of every “Not in the photos” field):</b> ${esc(D.missingTypes.join('; '))}</div>`:''}</div>
+   <div class="grid">${pages.map(([k,s])=>`<button class="pg ${s.read==='poor'?'poor':''}" data-p="${k}"><img alt="${k}" src="${A(s.thumb)}" loading="lazy"><div class="pt"><b>${k}</b> · ${esc((s.type||'').slice(0,40))}<br><span class="muted">${esc(s.own)} · ${s.read==='poor'?'<span class="retake">poor</span>':esc(s.read)}</span></div></button>`).join('')}</div>`;
+  $('main').querySelectorAll('.pg').forEach(p=>p.onclick=()=>openPage(p.dataset.p));
+}
+function renderLists(){
+  const L=lists();const poor=Object.entries(D.sources).filter(([,s])=>s.kind==='chart'&&s.read==='poor').map(([k])=>k);
+  const item=(x,extra)=>`<div class="list-item"><b>${esc(x.f.id)}</b> · ${esc(x.f.name)}<br><span dir="auto">${esc(x.f.value)}</span><br><span class="small muted">${esc(x.why)}${x.note?' · note: '+esc(x.note):''}${extra||''}</span>
+     ${(x.f.ev||[]).length?`<div class="small">${x.f.ev.map(e=>`${esc(e.src)}: “${esc(e.quote)}”`).join(' · ')}</div>`:''}</div>`;
+  $('main').innerHTML=`
+  <div class="panel"><h3>🟣 For the specialist<span class="count-pill">${L.spec.length}</span></h3><div class="small muted">Added to the study-wide specialist list when you send the decisions.</div>${L.spec.map(x=>item(x)).join('')||'<p class="muted">None.</p>'}</div>
+  <div class="panel"><h3>❓ Missing — ask the ICU<span class="count-pill">${L.icu.length}</span></h3><div class="small muted">Fields you marked “Missing — ask ICU”. Added to the study-wide ICU question list.</div>${L.icu.map(x=>item(x)).join('')||'<p class="muted">None yet.</p>'}</div>
+  <div class="panel"><h3>📷 Photos to retake / add</h3><div class="small">${poor.length?`Blurred: ${poor.join(', ')}. `:''}Not photographed: ${esc((D.missingTypes||[]).join('; ')||'—')}.</div></div>`;
+}
+function chainHtml(id){const c=D.chains[id];if(!c)return '';return `<details open><summary>WHATSAPP CONTEXT · ${esc(c.title)}</summary><div class="small muted">${esc(c.rule)}</div><table class="ctx"><tr><th>Time</th><th>Message</th><th>Assessment</th></tr>${c.items.map(i=>`<tr class="${i.cur?'cur':/reject|not this|different/i.test(i.assessment)?'rej':''}"><td class="small">${esc(i.time)}</td><td dir="auto">${esc(i.text)}</td><td class="small">${esc(i.assessment)}</td></tr>`).join('')}</table></details>`}
+function renderAudit(){
+  const q=D.qc||{};
+  $('main').innerHTML=`
+  <div class="panel"><h3>Timeline</h3>${(D.timeline||[]).map(t=>`<div class="tl"><b dir="auto">${esc(t.when)} — ${esc(t.what)}</b><span class="small muted">${esc((t.src||[]).join(', '))}</span>${t.conflict?`<div class="small tag fail">⚠ ${esc(t.conflict)}</div>`:''}</div>`).join('')||'<span class="muted">None</span>'}</div>
+  <div class="panel"><h3>WhatsApp</h3><div class="kv">${Object.entries(D.waReview||{}).map(([k,v])=>`<b>${esc(k)}</b><span dir="auto">${esc(v)}</span>`).join('')}</div>
+   ${Object.entries(D.sources).filter(([,s])=>s.kind==='wa').map(([k,s])=>`<div class="lbl">${k} · ${esc(s.sender)} · ${esc(s.ts)}</div><div class="msg" dir="auto">${esc(s.text)}</div>${chainHtml(s.chain)}`).join('')}</div>
+  <div class="panel"><h3>Method &amp; notes</h3>${(D.notes||[]).map(n=>`<p><b>${esc(n.title)}</b><br><span class="small">${esc(n.text)}</span></p>`).join('')}</div>
+  <div class="panel"><h3>Quality control</h3><div class="kv">${Object.entries(q).map(([k,v])=>`<b>${esc(k)}</b><span>${esc(v)}</span>`).join('')}</div></div>
+  <div class="panel"><h3>Source inventory</h3><div class="kv">${Object.entries(D.sources).map(([k,s])=>`<b>${k}</b><span dir="auto">${esc(s.kind==='wa'?'WhatsApp message · '+s.ts+' · '+s.own:(s.file+' · '+(s.type||'')+' · '+s.own+' · readability '+s.read+(s.dup?' · duplicate of '+s.dup:'')))}${s.drive?` · <a class="drive" href="${esc(s.drive)}" target="_blank" rel="noopener">Drive ↗</a>`:''}</span>`).join('')}</div></div>`;
+}
+function openEv(fid,i){
+  const f=byId[fid],e=f.ev[i],s=D.sources[e.src]||{};
+  let b=`<div class="mhead"><h3>${esc(f.id)} · ${esc(f.name)} — ${esc(e.src)}</h3><button class="close" onclick="closeM()">Close ×</button></div>`;
+  if(s.kind==='wa'){b+=`<div class="lbl">Sender · message time</div><div><mark dir="auto">${esc(s.sender)}</mark> · <mark>${esc(s.ts)}</mark> <span class="small muted">(message time, not clinical time)</span></div>
+    <div class="lbl">Full message</div><div class="msg" dir="auto">${hi(s.text,[e.quote])}</div>
+    <div class="lbl">Copy to search in WhatsApp</div><div class="copyrow"><input readonly value="${esc(s.phrase)}" dir="auto"><button class="ghost" data-copy="${esc(s.phrase)}">Copy</button></div><div class="small muted">${esc(s.uniq)}</div>
+    <div class="lbl">Ownership</div><div class="small"><b>${esc(s.own)}</b> — ${esc(s.ownWhy)}</div>${chainHtml(s.chain)}`}
+  else{b+=`<div class="lbl">What is written for ${esc(f.id)}</div><div dir="auto">“${esc(e.quote)}”${e.when?` <span class="muted">· ${esc(e.when)}</span>`:''}</div>
+    ${e.crop?`<div class="lbl">Field crop</div><img alt="crop" src="${A(e.crop)}">`:''}
+    <div class="small muted">${esc(s.file)} · ${esc(s.type)} · ownership ${esc(s.own)} · readability ${esc(s.read)}${s.dup?' · duplicate of '+esc(s.dup):''}</div>
+    ${s.drive?`<a class="drive" href="${esc(s.drive)}" target="_blank" rel="noopener">▲ Open original in Google Drive</a>`:''}
+    <div class="lbl green">🖼️ Full page</div><img alt="${esc(e.src)} full page" src="${A(s.full)}">`}
+  $('mbox').innerHTML=b;$('modal').classList.add('open');
+  $('mbox').querySelectorAll('[data-copy]').forEach(x=>x.onclick=()=>copyTxt(x.dataset.copy));
+}
+function openPage(p){const s=D.sources[p];if(!s)return;$('mbox').innerHTML=`<div class="mhead"><h3>${esc(p)} · ${esc(s.type)}</h3><button class="close" onclick="closeM()">Close ×</button></div><div class="small muted">${esc(s.file)} · ownership ${esc(s.own)} · readability ${esc(s.read)}</div>${s.drive?`<a class="drive" href="${esc(s.drive)}" target="_blank" rel="noopener">▲ Open original in Google Drive</a>`:''}<img alt="${esc(p)}" src="${A(s.full)}">`;$('modal').classList.add('open')}
+function closeM(){$('modal').classList.remove('open')}
+$('modal').onclick=e=>{if(e.target.id==='modal')closeM()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
+function copyTxt(t){(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast('Copied'),()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');toast('Copied')}catch(e){prompt('Copy:',t)}a.remove()})}
+const ALBL={accept:'ACCEPT',correct:'CORRECT',searched_no:'SEARCHED — NOT DOCUMENTED',ask_icu:'MISSING — ASK ICU',escalate:'→ SPECIALIST',na:'NOT APPLICABLE'};
+function decisionsText(){
+  const L=[`ICU review decisions · ${D.meta.patient}${D.meta.registerNo?' · reg '+D.meta.registerNo:''} · reviewer ${S.who||'?'} · ${new Date().toLocaleDateString('en-GB')} · protocol ${D.meta.protocol}`];
+  for(const f of FIELDS){const d=dec(f.id);const parts=[];
+    if(d.a)parts.push(ALBL[d.a]+(d.a==='searched_no'&&f.absent?' → '+f.absent:'')+(d.a==='accept'?' — '+(f.value.length>70?f.value.slice(0,70)+'…':f.value):'')+(d.v?' — '+d.v:''));
+    if(String(d.n||'').trim())parts.push('note: '+String(d.n).trim().replace(/\n+/g,' / '));
+    if(d.bv)parts.push(`BLIND CHECK read "${d.bv}" · ${d.bm?'match':'MISMATCH'}`);
+    if(parts.length)L.push(`${f.id}: ${parts.join(' | ')}`)}
+  const miss=required().filter(f=>!decided(f)).map(f=>f.id);if(miss.length)L.push(`NO DECISION YET (${miss.length}): ${miss.join(', ')}`);
+  return L.join('\n');
+}
+function rows(){return FIELDS.map(f=>{const d=dec(f.id);return {field:f.id,section:f.sec,name:f.name,route:f.route,reader_status:f.readerStatus,proposed_value:f.value,decision:d.a||(f.route==='GREEN'?'auto':''),decision_value:d.v||'',note:d.n||'',blind_value:d.bv||'',blind_match:d.bv?(d.bm?'yes':'no'):'',reviewer:d.i||'',date:d.d||'',sources:(f.ev||[]).map(e=>e.src).join(' ')}})}
+function dl(name,type,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+$('copyBtn').textContent='Copy for Claude';
+$('copyBtn').onclick=()=>copyTxt(decisionsText());
+$('csvBtn').onclick=()=>{const r=rows(),k=Object.keys(r[0]);dl(D.meta.patient+'_decisions.csv','text/csv','﻿'+[k.join(','),...r.map(x=>k.map(c=>'"'+String(x[c]).replace(/"/g,'""')+'"').join(','))].join('\n'))};
+$('jsonBtn').onclick=()=>dl(D.meta.patient+'_decisions.json','application/json',JSON.stringify({patient:D.meta.patient,reviewer:S.who,decisions:rows()},null,1));
+function renderMain(){({review:renderReview,pages:renderPages,lists:renderLists,audit:renderAudit})[S.tab]()}
+function render(){hero();tabs();renderMain()}
+render();save();
+</script>
+</body>
+</html>
